@@ -67,7 +67,7 @@ export function masquerChargement(){
     loading.classList.add("hidden");
 }
 // Affiche le message d'erreur.
-export function afficherErreur(){
+export function afficherErreur(message){
     const erreur= document.getElementById("erreur-api");
     erreur.classList.remove("hidden");
 
@@ -99,6 +99,7 @@ export function afficherGraphique(points){
         const groupe = document.createElement("div");
         groupe.className = "flex flex-col items-center justify-end h-full";
         const barre = document.createElement("div");
+        barre.title = `${point.prix.toFixed(2)}`;
         const hauteur = (point.prix / prixMax) * 200;
         barre.className = "bg-[#35158C] w-6 md:w-8 rounded-t-md";
         barre.style.width = "24px";
@@ -111,6 +112,20 @@ export function afficherGraphique(points){
         groupe.appendChild(dateLabel);
         container.appendChild(groupe);
     });
+}
+export function afficherErreurHistorique(message){
+    const erreur = document.getElementById("erreur-historique");
+    const bouton = document.getElementById("retry-history-btn");
+    erreur.textContent= message;
+    erreur.classList.remove("hidden");
+    bouton.classList.remove("hidden");
+}
+
+export function masquerErreurHistorique() {
+    const erreur = document.getElementById("erreur-historique");
+    const bouton = document.getElementById("retry-history-btn");
+    erreur.classList.add("hidden");
+    bouton.classList.add("hidden");
 }
 
 

@@ -42,25 +42,63 @@ export async function getGoldHistory(){
     try{
         const response = await fetch(HISTORY_URL);
         if(!response.ok){
-            throw new Error("Erreur lors du chargement de l'historique")
+            if(response.status=== 429){
+                throw new Error("QUOTA");
+            }
+            if(response.status >= 400 && response.status < 500){
+                 throw new Error("HTTP_CLIENT");
+            }
+            if(response.status>=500){
+                throw new Error("HTTP_SERVER");
+            }
         }
         const data = await response.json();
         return data ;
     }catch(error){
+        if (error instanceof SyntaxError) {
+            throw new Error("JSON_INVALID");
+        }
+        if (error instanceof TypeError) {
+            if (!navigator.onLine) {
+                throw new Error("OFFLINE");
+            }
+            throw new Error("NETWORK");
+        }
         throw error;
     }
 }
 // Récupère l'historique des prix de silver
 export async function getSilverHistory() {
+  try{
     const url = "https://xaus.com/api/v1/chart?symbol=silver&range=1mo&interval=1d";
 
     const response = await fetch(url);
 
     if (!response.ok) {
-        throw new Error("Erreur lors du chargement de l'historique de l'argent");
+       if (response.status === 429) {
+            throw new Error("QUOTA");
+        }
+        if (response.status >= 400 && response.status < 500) {
+            throw new Error("HTTP_CLIENT");
+        }
+        if (response.status >= 500) {
+            throw new Error("HTTP_SERVER");
+        }
     }
-
     const data = await response.json();
 
     return data;
+  }catch(error){
+    if (error instanceof SyntaxError) {
+        throw new Error("JSON_INVALID");
+    }
+    if (error instanceof TypeError) {
+        if (!navigator.onLine) {
+            throw new Error("OFFLINE");
+        }
+        throw new Error("NETWORK");
+    }
+    throw error;
+  }
+  
 }
