@@ -70,11 +70,24 @@ export function masquerChargement(){
 export function afficherErreur(){
     const erreur= document.getElementById("erreur-api");
     erreur.classList.remove("hidden");
+
+    const paragraphe = erreur.querySelector("p");
+    paragraphe.textContent = message;
 }
 // Masque le message d'erreur.
 export function masquerErreur() {
     const erreur = document.getElementById("erreur-api");
     erreur.classList.add("hidden");
+}
+// afficher le message de succes.
+export function afficherSucces(){
+    const succes = document.getElementById("succes-api");
+    succes.classList.remove("hidden");
+}
+// masque le message de succes.
+export function masquerSucces(){
+    const succes = document.getElementById("succes-api");
+    succes.classList.add("hidden");
 }
 //Afficher l'historique des prix sous forme de graphique.
 export function afficherGraphique(points){

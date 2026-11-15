@@ -8,7 +8,9 @@ import { afficherPrix,
         masquerChargement,
         afficherErreur,
         masquerErreur,
-        afficherGraphique
+        afficherGraphique,
+        afficherSucces,
+        masquerSucces
     } from "./ui.js";
 
 const deviseSelect = document.getElementById("devise-select");
@@ -24,6 +26,7 @@ let prixActuels = null;
 async function init(){
     afficherChargement();
     masquerErreur();
+    masquerSucces();
     try{
         const data= await getCurrentPrices(deviseSelect.value);
         prixActuels = data;
@@ -40,9 +43,24 @@ async function init(){
             console.error("Erreur historique Silver:", error);
         }
         afficherPrix(data,history,silverHistory);
+        afficherSucces();
         masquerChargement();
     }catch(error){
         masquerChargement();
+        let message = "Une erreur inattendue est survenue.";
+        if(error.message === "OFFLINE"){
+            message = "Vous êtes hors ligne. Vérifiez votre connexion.";
+        }else if (error.message === "NETWORK"){
+            message ="Erreur de connexion au serveur."; 
+        }else if (error.message === "HTTP_CLIENT"){
+            message = "Erreur dans la requête (HTTP 4xx).";
+        }else if (error.message === "HTTP_SERVER"){
+            message = "Erreur du serveur (HTTP 5xx).";
+        }else if (error.message === "QUOTA"){
+            message = "Quota API dépassé. Réessayez plus tard.";
+        }else if (error.message === "JSON_INVALID"){
+            message = "La réponse du serveur est illisible.";
+        }
         afficherErreur();
         console.error(error);
     }
