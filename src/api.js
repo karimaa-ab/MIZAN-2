@@ -5,7 +5,15 @@ export async function getCurrentPrices(currency){
        const url =`${API_URL}?currency=${currency}&unit=gram`;
        const response = await fetch(url);
        if(!response.ok){
-          throw new Error("Erreur serveur")
+          if(response.status === 429){
+            throw new Error("QUOTA");
+          }
+          if(response.status>= 400 && response.status < 500){
+            throw new Error("HTTP_CLIENT");
+          }
+          if(response.status>= 500){
+            throw new Error("HTTP_SERVER");
+          }
         }
         const data = await response.json();
         data.silver={
@@ -15,6 +23,15 @@ export async function getCurrentPrices(currency){
         };
         return data;
     }catch(error){
+        if( error instanceof SyntaxError){
+            throw new Error("JSON_INVALID");
+        }
+        if(error instanceof TypeError){
+            if(!navigator.onLine){
+                throw new Error("OFFLINE");
+            }
+            throw new Error("NETWORK");
+        }
         throw error;
 }
 }
