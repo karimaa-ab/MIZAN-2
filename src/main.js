@@ -10,7 +10,9 @@ import { afficherPrix,
         masquerErreur,
         afficherGraphique,
         afficherSucces,
-        masquerSucces
+        masquerSucces,
+        afficherErreurHistorique,
+        masquerErreurHistorique
     } from "./ui.js";
 
 const deviseSelect = document.getElementById("devise-select");
@@ -21,15 +23,22 @@ const calcQty = document.getElementById("calc-qty");
 const calcBtn = document.getElementById("calc-btn");
 const calcError = document.getElementById("calc-error");
 const calcResult = document.getElementById("calc-result");
+const retryBtn = document.getElementById("retry-btn");
+const retryHistoryBtn = document.getElementById("retry-history-btn");
 deviseSelect.value = recupererDevise();
 let prixActuels = null;
 async function init(){
     afficherChargement();
+    retryBtn.disabled = true;
+    deviseSelect.disabled = true;
+    metalSelect.disabled = true;
+    periodSelect.disabled = true;
     masquerErreur();
     masquerSucces();
     try{
         const data= await getCurrentPrices(deviseSelect.value);
         prixActuels = data;
+        chargerHistorique();
         let history = null;
         try{
             history = await getGoldHistory();
@@ -44,9 +53,21 @@ async function init(){
         }
         afficherPrix(data,history,silverHistory);
         afficherSucces();
+        setTimeout(() => {
+           masquerSucces();
+        }, 3000);
         masquerChargement();
+        retryBtn.disabled = false;
+        deviseSelect.disabled = false;
+        metalSelect.disabled = false;
+        periodSelect.disabled = false;
     }catch(error){
         masquerChargement();
+        masquerSucces();
+        retryBtn.disabled = false;
+        deviseSelect.disabled = false;
+        metalSelect.disabled = false;
+        periodSelect.disabled = false;
         let message = "Une erreur inattendue est survenue.";
         if(error.message === "OFFLINE"){
             message = "Vous êtes hors ligne. Vérifiez votre connexion.";
@@ -61,30 +82,36 @@ async function init(){
         }else if (error.message === "JSON_INVALID"){
             message = "La réponse du serveur est illisible.";
         }
-        afficherErreur();
+        afficherErreur(message);
         console.error(error);
     }
 }
 init();
-const retryBtn = document.getElementById("retry-btn");
 
 retryBtn.addEventListener("click", init);
 function changerDevise(){
     sauvegarderDevise(deviseSelect.value);
     init();
-    chargerHistorique();
 }
 deviseSelect.addEventListener("change", changerDevise);
 
 async function chargerHistorique(){
-    const data = await getCurrentPrices(deviseSelect.value)
-    const points = await afficherHistorique( metalSelect.value, Number(periodSelect.value),data.fx_rate);
-    afficherGraphique(points);
+    if(!prixActuels){
+        return;
+    }
+    masquerErreurHistorique();
+    try{
+       const points = await afficherHistorique( metalSelect.value, Number(periodSelect.value),prixActuels.fx_rate);
+       console.log("Historique chargé:", points);
+       afficherGraphique(points);
+    }catch(error){
+        afficherErreurHistorique("Impossible de charger l'historique.");
+        console.error(error);
+    }
 }
-chargerHistorique();
 metalSelect.addEventListener("change", chargerHistorique);
 periodSelect.addEventListener("change", chargerHistorique);
-
+retryHistoryBtn.addEventListener("click", chargerHistorique);
 function gererCalcul(){
     const poids = calcQty.value;
     const erreur = validerPoids(poids);
