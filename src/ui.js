@@ -76,5 +76,28 @@ export function masquerErreur() {
     const erreur = document.getElementById("erreur-api");
     erreur.classList.add("hidden");
 }
+//Afficher l'historique des prix sous forme de graphique.
+export function afficherGraphique(points){
+    const container = document.getElementById("chart-container");
+    container.textContent = "";
+    container.classList.add("flex","items-end","gap-2","h-64","overflow-x-auto","max-w-full");
+    const prixMax =  Math.max(...points.map(point => point.prix));
+    points.forEach(point =>{
+        const groupe = document.createElement("div");
+        groupe.className = "flex flex-col items-center justify-end h-full";
+        const barre = document.createElement("div");
+        const hauteur = (point.prix / prixMax) * 200;
+        barre.className = "bg-[#35158C] w-6 md:w-8 rounded-t-md";
+        barre.style.width = "24px";
+        barre.style.backgroundColor = "#35158C";
+        barre.style.height =`${hauteur}px`;
+        groupe.appendChild(barre);
+        const dateLabel = document.createElement("span");
+        dateLabel.textContent= point.date;
+        dateLabel.className= "text-xs text-gray-500 mt-2";
+        groupe.appendChild(dateLabel);
+        container.appendChild(groupe);
+    });
+}
 
 
