@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mizan - Espace de gestion</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+<body class="bg-[#F8F6FC] text-gray-800">
+    <div class="min-h-screen flex">
+        <div id="sidebar-overlay" class="hidden fixed inset-0 bg-black/40 z-40 md:hidden"></div>
+
+        <aside id="sidebar" class="fixed md:sticky top-0 left-0 z-50 w-64 h-screen bg-[#35158C] text-white p-6 shrink-0 overflow-y-auto transform -translate-x-full md:translate-x-0 transition-transform duration-300">
+            <div class="text-center mb-12">
+                <img src="imagesPartie2/dimond.png" alt="Logo Mizan" class="w-16 h-16 object-contain mx-auto">
+                <h1 class="text-3xl font-bold mt-3">Mizan</h1>
+                <p class="text-purple-200 text-sm mt-2">Espace de gestion</p>
+            </div>
+
+            <nav class="flex flex-col gap-4">
+                <a href="#dashboard" class="flex items-center gap-3 bg-white/20 rounded-lg px-4 py-3">
+                    <img src="imagesPartie2/dashboard-interface.png" alt="" class="w-6 h-6 object-contain">
+                    <span>Tableau de bord</span>
+                </a>
+
+                <a href="#produits" class="flex items-center gap-3 hover:bg-white/20 rounded-lg px-4 py-3 transition">
+                    <img src="imagesPartie2/produits.png" alt=""  class="w-6 h-6 object-contain">
+                    <span>Produits</span>
+                </a>
+
+                <a href="#reservations"
+                   class="flex items-center gap-3 hover:bg-white/20 rounded-lg px-4 py-3 transition">
+                    <img src="imagesPartie2/reservations.png" alt="" class="w-6 h-6 object-contain">
+                    <span>Réservations</span>
+                </a>
+
+                <a href="#statistiques" class="flex items-center gap-3 hover:bg-white/20 rounded-lg px-4 py-3 transition">
+                    <img src="imagesPartie2/statistics.png" alt="" class="w-6 h-6 object-contain">
+                    <span>Statistiques</span>
+                </a>
+
+                <a href="#parametres" class="flex items-center gap-3 hover:bg-white/20 rounded-lg px-4 py-3 transition">
+                    <img src="imagesPartie2/setting.png" alt="" class="w-6 h-6 object-contain">
+                    <span>Paramètres</span>
+                </a>
+            </nav>
+            <div class="border-t border-white/20 mt-10 pt-6">
+                <a href="./index.html" class="flex items-center gap-3 hover:bg-white/20 rounded-lg px-4 py-3 transition">
+                    <span class="text-xl">←</span>
+                    <span>Retour à la Partie 1</span>
+                </a>
+            </div>
+        </aside>
+
+        <main class="flex-1 min-w-0">
+            <header id="dashboard" class="bg-white shadow-sm px-4 sm:px-6 lg:px-8 py-5 flex items-center gap-4">
+                <button type="button" id="menu-mobile" aria-label="Ouvrir le menu" aria-expanded="false" class="md:hidden text-[#35158C] text-3xl shrink-0"> ☰ </button>
+                <div>
+                    <h2 class="text-xl sm:text-2xl font-bold text-[#35158C]"> Tableau de bord</h2>
+                    <p class="text-gray-500 text-sm mt-1">Bienvenue dans votre espace de gestion. </p>
+                </div>
+            </header>
+            <div class="p-4 sm:p-6 lg:p-8">
+                <section class="relative min-h-[180px] sm:min-h-[200px] flex items-center rounded-xl overflow-hidden p-5 sm:p-8">
+                    <div class="absolute inset-0 z-0">
+                        <img src="imagesPartie2/Lavender Luxe Jewellery Display.png" alt="Jewellery" class="w-full h-full object-cover">
+                    </div>
+                    <div class="relative z-10 w-full sm:w-1/2 flex flex-col justify-center items-start">
+                        <h2 class="text-2xl sm:text-3xl font-bold text-[#241044]"> Espace de gestion </h2>
+                        <p class="text-[#302044] mt-3 text-sm sm:text-base">  Gérez votre catalogue de produits et suivez les réservations de vos clients.</p>
+                        <div class="w-20 h-1 bg-[#35158C] rounded-full mt-5"></div>
+                    </div>
+                </section>
+
+                <section id="statistiques" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 my-8">
+                    <div class="bg-white rounded-xl shadow-sm p-5 sm:p-6 flex items-center gap-4">
+                        <div class="bg-purple-100 rounded-xl p-3 sm:p-4 shrink-0">
+                            <img src="imagesPartie2/produits.png" alt="" class="w-8 h-8 object-contain">
+                        </div>
+                        <div class="min-w-0">
+                            <p class="text-gray-500 text-sm">Total des produits</p>
+                            <p id="total-produits" class="text-2xl sm:text-3xl font-bold text-[#35158C] mt-1">  -- </p>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-xl shadow-sm p-5 sm:p-6 flex items-center gap-4">
+                        <div class="bg-purple-100 rounded-xl p-3 sm:p-4 shrink-0">
+                            <img src="imagesPartie2/reservations.png" alt="" class="w-8 h-8 object-contain">
+                        </div>
+                        <div class="min-w-0">
+                            <p class="text-gray-500 text-sm"> Réservations </p>
+                            <p id="total-reservations" class="text-2xl sm:text-3xl font-bold text-[#35158C] mt-1"> -- </p>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-xl shadow-sm p-5 sm:p-6 flex items-center gap-4">
+                        <div class="bg-purple-100 rounded-xl p-3 sm:p-4 shrink-0">
+                            <img src="imagesPartie2/statistics.png" alt="" class="w-8 h-8 object-contain">
+                        </div>
+                        <div class="min-w-0">
+                            <p class="text-gray-500 text-sm"> Produits disponibles </p>
+                            <p id="produits-disponibles" class="text-2xl sm:text-3xl font-bold text-[#35158C] mt-1"> -- </p>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="produits" class="bg-white rounded-xl shadow-sm mb-8 overflow-hidden">
+                    <div class="bg-[#35158C] text-white px-4 sm:px-6 py-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+
+                        <h2 class="text-lg sm:text-xl font-bold"> Gestion des produits</h2>
+                        <button type="button" class="w-full sm:w-auto flex items-center justify-center gap-2 bg-white text-[#35158C] px-4 py-2 rounded-lg font-semibold hover:bg-purple-100 transition">
+                            + Ajouter un produit
+                        </button>
+                    </div>
+                    <div class="p-4 sm:p-6">
+                        <div class="flex flex-col lg:flex-row gap-3 sm:gap-4 mb-6">
+                            <div class="relative flex-1 min-w-0">
+                                <img src="imagesPartie2/search.png" alt="" class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 object-contain">
+                                <input type="search"
+                                       id="recherche-produit"
+                                       placeholder="Rechercher un produit..."
+                                       class="w-full border border-gray-200 rounded-lg pl-10 pr-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#35158C]"
+                                    >
+                            </div>
+                            <select id="filtre-type" class="w-full lg:w-auto border border-gray-200 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#35158C]">
+                                <option value="">Tous les types</option>
+                                <option value="bague">Bagues</option>
+                                <option value="collier">Colliers</option>
+                                <option value="bracelet">Bracelets</option>
+                                <option value="boucles">Boucles d'oreilles</option>
+                            </select>
+
+                            <select id="filtre-statut" class="w-full lg:w-auto border border-gray-200 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#35158C]">
+                                <option value="">Tous les statuts</option>
+                                <option value="disponible">Disponible</option>
+                                <option value="reserve">Réservé</option>
+                            </select>
+
+                            <select id="tri-produits" class="w-full lg:w-auto border border-gray-200 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#35158C]">
+                                <option value="">Trier par</option>
+                                <option value="title">Nom</option>
+                                <option value="price">Prix</option>
+                                <option value="date">Date</option>
+                            </select>
+                        </div>
+                        <div id="liste-produits" class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 sm:gap-5">
+                            <article class="border border-gray-100 rounded-xl p-3 hover:shadow-md transition">
+                                <div class="bg-[#F7F3FC] rounded-lg h-40 flex items-center justify-center">
+                                    <img src="imagesPartie2/bague.png" alt="Bague en or" class="h-32 w-full object-contain">
+                                </div>
+                                <h3 class="font-bold mt-4">Bague en or</h3>
+                                <p class="text-[#35158C] font-bold mt-2"> 12 500 MAD </p>
+                                <span class="inline-block bg-green-100 text-green-700 text-xs px-3 py-1 rounded-full mt-2"> Disponible</span>
+                                <div class="flex gap-2 mt-4">
+                                    <button type="button" class="flex-1 bg-[#713BD1] text-white rounded-lg py-2 text-sm"> Modifier</button>
+                                    <button type="button" class="border border-red-300 text-red-600 rounded-lg px-3 py-2 text-sm"> Supprimer</button>
+                                </div>
+                            </article>
+                            <article class="border border-gray-100 rounded-xl p-3 hover:shadow-md transition">
+                                <div class="bg-[#F7F3FC] rounded-lg h-40 flex items-center justify-center">
+                                    <img src="imagesPartie2/collier.png" alt="Collier en or" class="h-32 w-full object-contain">
+                                </div>
+                                <h3 class="font-bold mt-4"> Collier en or</h3>
+                                <p class="text-[#35158C] font-bold mt-2"> 18 000 MAD</p>
+                                <span class="inline-block bg-green-100 text-green-700 text-xs px-3 py-1 rounded-full mt-2"> Disponible</span>
+                                <div class="flex gap-2 mt-4">
+                                    <button type="button" class="flex-1 bg-[#713BD1] text-white rounded-lg py-2 text-sm"> Modifier</button>
+                                    <button type="button" class="border border-red-300 text-red-600 rounded-lg px-3 py-2 text-sm">  Supprimer</button>
+                                </div>
+                            </article>
+                            <article class="border border-gray-100 rounded-xl p-3 hover:shadow-md transition">
+                                <div class="bg-[#F7F3FC] rounded-lg h-40 flex items-center justify-center">
+                                    <img src="imagesPartie2/boucles.png" alt="Boucles d'oreilles" class="h-32 w-full object-contain">
+                                </div>
+                                <h3 class="font-bold mt-4"> Boucles d'oreilles</h3>
+                                <p class="text-[#35158C] font-bold mt-2"> 7 500 MAD </p>
+                                <span class="inline-block bg-green-100 text-green-700 text-xs px-3 py-1 rounded-full mt-2"> Disponible</span>
+                                <div class="flex gap-2 mt-4">
+                                    <button type="button" class="flex-1 bg-[#713BD1] text-white rounded-lg py-2 text-sm"> Modifier</button>
+                                    <button type="button" class="border border-red-300 text-red-600 rounded-lg px-3 py-2 text-sm"> Supprimer</button>
+                                </div>
+                            </article>
+                            <article class="border border-gray-100 rounded-xl p-3 hover:shadow-md transition">
+                                <div class="bg-[#F7F3FC] rounded-lg h-40 flex items-center justify-center">
+                                    <img src="imagesPartie2/bracelet.png" alt="Bracelet en or" class="h-32 w-full object-contain">
+                                </div>
+                                <h3 class="font-bold mt-4"> Bracelet en or</h3>
+                                <p class="text-[#35158C] font-bold mt-2">  6 000 MAD </p>
+                                <span class="inline-block bg-orange-100 text-orange-700 text-xs px-3 py-1 rounded-full mt-2"> Réservé</span>
+                                <div class="flex gap-2 mt-4">
+                                    <button type="button" class="flex-1 bg-[#713BD1] text-white rounded-lg py-2 text-sm"> Modifier</button>
+                                    <button type="button" class="border border-red-300 text-red-600 rounded-lg px-3 py-2 text-sm"> Supprimer</button>
+                                </div>
+                            </article>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="reservations" class="bg-white rounded-xl shadow-sm overflow-hidden">
+                    <div class="bg-[#35158C] text-white px-4 sm:px-6 py-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                        <h2 class="text-lg sm:text-xl font-bold"> Gestion des réservations</h2>
+                        <button type="button" class="w-full sm:w-auto text-sm border border-white/70 rounded-lg px-4 py-2 hover:bg-white/20 transition">
+                            Voir toutes les réservations
+                        </button>
+                    </div>
+                    <div class="p-4 sm:p-6 overflow-x-auto">
+                        <table class="w-full min-w-[600px] text-left">
+                            <thead>
+                                <tr class="bg-purple-50 text-[#35158C]">
+                                    <th class="px-4 py-3">Client</th>
+                                    <th class="px-4 py-3">Produit</th>
+                                    <th class="px-4 py-3">Date</th>
+                                    <th class="px-4 py-3">Statut</th>
+                                    <th class="px-4 py-3">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="liste-reservations">
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+    <footer class="bg-[#EDE7F8] py-4 px-4 sm:px-6 md:px-12">
+        <div class="flex flex-col md:flex-row items-center justify-between gap-2 text-sm">
+            <p class="text-gray-800"> © 2026 Mizan. Tous droits réservés.</p>
+            <p class="flex items-center gap-2 italic text-[#35158C] text-center"> Une vision claire pour un marché plus transparent</p>
+        </div>
+
+    </footer>
+    <script type="module" src="./srcPartie2/main2.js"></script>
+</body>
+</html>
