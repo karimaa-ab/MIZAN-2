@@ -10,7 +10,7 @@
     },
     {
       "id": "2",
-      "title": "Collier en argent",
+      "title": "Collier en or",
       "description": "Collier raffiné en argent",
       "price": 850,
       "image": "imagesPartie2/collier.png",
@@ -22,6 +22,14 @@
       "description": "Boucles élégantes en or",
       "price": 1200,
       "image": "imagesPartie2/boucles.png",
+      "status": "Disponible"
+    },
+    {
+      "id": "4",
+      "title": "Bracelet en or",
+      "description": "Bracelet élégant en argent avec une finition raffinée",
+      "price": 950,
+      "image": "imagesPartie2/bracelet.png",
       "status": "Disponible"
     }
   ]
