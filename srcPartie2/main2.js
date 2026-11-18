@@ -1,9 +1,12 @@
-import { obtenirProduits } from "./products.js";
+import { obtenirProduits, rechercherProduits  } from "./products.js";
 import { afficherProduits } from "./ui2.js";
+const rechercheProduit = document.getElementById("recherche-produit");
+
+let tousLesProduits = [];
 async function chargerProduits() {
     try{
-        const produits = await obtenirProduits();
-        afficherProduits(produits);
+        tousLesProduits = await obtenirProduits();
+        afficherProduits(tousLesProduits);
     }catch(error){
         const erreurProduits = document.getElementById("erreur-produits");
         erreurProduits.textContent = error.message;
@@ -11,6 +14,11 @@ async function chargerProduits() {
     }
 }
 chargerProduits();
+
+rechercheProduit.addEventListener("input", function(){
+    const resultat = rechercherProduits(tousLesProduits,rechercheProduit.value);
+    afficherProduits(resultat);
+})
 
 // Menu mobile
 const menuMobile = document.getElementById("menu-mobile");
