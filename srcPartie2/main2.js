@@ -1,4 +1,16 @@
-import { request } from "./api2.js";
+import { obtenirProduits } from "./products.js";
+import { afficherProduits } from "./ui2.js";
+async function chargerProduits() {
+    try{
+        const produits = await obtenirProduits();
+        afficherProduits(produits);
+    }catch(error){
+        const erreurProduits = document.getElementById("erreur-produits");
+        erreurProduits.textContent = error.message;
+        erreurProduits.classList.remove("hidden");
+    }
+}
+chargerProduits();
 
 // Menu mobile
 const menuMobile = document.getElementById("menu-mobile");

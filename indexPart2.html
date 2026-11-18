@@ -141,56 +141,8 @@
                                 <option value="date">Date</option>
                             </select>
                         </div>
-                        <div id="liste-produits" class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 sm:gap-5">
-                            <article class="border border-gray-100 rounded-xl p-3 hover:shadow-md transition">
-                                <div class="bg-[#F7F3FC] rounded-lg h-40 flex items-center justify-center">
-                                    <img src="imagesPartie2/bague.png" alt="Bague en or" class="h-32 w-full object-contain">
-                                </div>
-                                <h3 class="font-bold mt-4">Bague en or</h3>
-                                <p class="text-[#35158C] font-bold mt-2"> 12 500 MAD </p>
-                                <span class="inline-block bg-green-100 text-green-700 text-xs px-3 py-1 rounded-full mt-2"> Disponible</span>
-                                <div class="flex gap-2 mt-4">
-                                    <button type="button" class="flex-1 bg-[#713BD1] text-white rounded-lg py-2 text-sm"> Modifier</button>
-                                    <button type="button" class="border border-red-300 text-red-600 rounded-lg px-3 py-2 text-sm"> Supprimer</button>
-                                </div>
-                            </article>
-                            <article class="border border-gray-100 rounded-xl p-3 hover:shadow-md transition">
-                                <div class="bg-[#F7F3FC] rounded-lg h-40 flex items-center justify-center">
-                                    <img src="imagesPartie2/collier.png" alt="Collier en or" class="h-32 w-full object-contain">
-                                </div>
-                                <h3 class="font-bold mt-4"> Collier en or</h3>
-                                <p class="text-[#35158C] font-bold mt-2"> 18 000 MAD</p>
-                                <span class="inline-block bg-green-100 text-green-700 text-xs px-3 py-1 rounded-full mt-2"> Disponible</span>
-                                <div class="flex gap-2 mt-4">
-                                    <button type="button" class="flex-1 bg-[#713BD1] text-white rounded-lg py-2 text-sm"> Modifier</button>
-                                    <button type="button" class="border border-red-300 text-red-600 rounded-lg px-3 py-2 text-sm">  Supprimer</button>
-                                </div>
-                            </article>
-                            <article class="border border-gray-100 rounded-xl p-3 hover:shadow-md transition">
-                                <div class="bg-[#F7F3FC] rounded-lg h-40 flex items-center justify-center">
-                                    <img src="imagesPartie2/boucles.png" alt="Boucles d'oreilles" class="h-32 w-full object-contain">
-                                </div>
-                                <h3 class="font-bold mt-4"> Boucles d'oreilles</h3>
-                                <p class="text-[#35158C] font-bold mt-2"> 7 500 MAD </p>
-                                <span class="inline-block bg-green-100 text-green-700 text-xs px-3 py-1 rounded-full mt-2"> Disponible</span>
-                                <div class="flex gap-2 mt-4">
-                                    <button type="button" class="flex-1 bg-[#713BD1] text-white rounded-lg py-2 text-sm"> Modifier</button>
-                                    <button type="button" class="border border-red-300 text-red-600 rounded-lg px-3 py-2 text-sm"> Supprimer</button>
-                                </div>
-                            </article>
-                            <article class="border border-gray-100 rounded-xl p-3 hover:shadow-md transition">
-                                <div class="bg-[#F7F3FC] rounded-lg h-40 flex items-center justify-center">
-                                    <img src="imagesPartie2/bracelet.png" alt="Bracelet en or" class="h-32 w-full object-contain">
-                                </div>
-                                <h3 class="font-bold mt-4"> Bracelet en or</h3>
-                                <p class="text-[#35158C] font-bold mt-2">  6 000 MAD </p>
-                                <span class="inline-block bg-orange-100 text-orange-700 text-xs px-3 py-1 rounded-full mt-2"> Réservé</span>
-                                <div class="flex gap-2 mt-4">
-                                    <button type="button" class="flex-1 bg-[#713BD1] text-white rounded-lg py-2 text-sm"> Modifier</button>
-                                    <button type="button" class="border border-red-300 text-red-600 rounded-lg px-3 py-2 text-sm"> Supprimer</button>
-                                </div>
-                            </article>
-                        </div>
+                        <p id="erreur-produits" class="hidden text-red-600 text-sm mb-4" role="alert"></p>
+                        <div id="liste-produits" class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 sm:gap-5"></div>
                     </div>
                 </section>
 
