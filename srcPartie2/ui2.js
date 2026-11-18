@@ -1,5 +1,6 @@
 export function afficherProduits(produits){
     const listeProduits = document.getElementById("liste-produits");
+    listeProduits.replaceChildren();
     produits.forEach(function(produit) {
         const carte = document.createElement("article");
         carte.className= "border border-gray-100 rounded-xl p-3 hover:shadow-md transition";
