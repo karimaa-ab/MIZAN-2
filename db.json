@@ -1,36 +1,4 @@
 {
-  "products": [
-    {
-      "id": "1",
-      "title": "Bague en or",
-      "description": "Bague élégante en or 18 carats",
-      "price": 2500,
-      "image": "imagesPartie2/bague.png",
-      "status": "Disponible"
-    },
-    {
-      "id": "2",
-      "title": "Collier en or",
-      "description": "Collier raffiné en argent",
-      "price": 850,
-      "image": "imagesPartie2/collier.png",
-      "status": "Réservé"
-    },
-    {
-      "id": "3",
-      "title": "Boucles d'oreilles",
-      "description": "Boucles élégantes en or",
-      "price": 1200,
-      "image": "imagesPartie2/boucles.png",
-      "status": "Disponible"
-    },
-    {
-      "id": "4",
-      "title": "Bracelet en or",
-      "description": "Bracelet élégant en argent avec une finition raffinée",
-      "price": 950,
-      "image": "imagesPartie2/bracelet.png",
-      "status": "Disponible"
-    }
-  ]
+  "products": []
+   
 }
