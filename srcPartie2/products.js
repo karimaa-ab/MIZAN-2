@@ -42,3 +42,10 @@ export function filtrerProduits(produits, statut){
         return produit.status.toLowerCase()=== statut;
     });
 }
+// ajouter un nouveau produit
+export async function ajouterProduit(nouveauProduit) {
+    return await request("/products",{
+        method: "POST",
+        body : JSON.stringify(nouveauProduit)
+    }); 
+}

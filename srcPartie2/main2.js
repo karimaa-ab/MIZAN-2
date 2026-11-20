@@ -2,15 +2,29 @@ import { obtenirProduits,
         rechercherProduits,
         trierProduits,
         filtrerProduits,
-        obtenirProduitParId  
+        obtenirProduitParId,
+        ajouterProduit 
     } from "./products.js";
 import { afficherProduits } from "./ui2.js";
+import { validerTitre,
+        validerDescription,
+        validerPrix
+} from "./validation2.js";
+
 const rechercheProduit = document.getElementById("recherche-produit");
 const triProduits = document.getElementById("tri-produits");
 const filtreStatut = document.getElementById("filtre-statut");
 const listeProduits = document.getElementById("liste-produits");
-
-
+const ouvrirFormulaire = document.getElementById("ouvrir-formulaire");
+const dialogAjoutProduit =document.getElementById("dialog-ajout-produit");
+const fermerAjout = document.getElementById("fermer-ajout");
+const formAjoutProduit = document.getElementById("form-ajout-produit");
+const inputTitre = document.getElementById("nouveau-titre");
+const inputDescription = document.getElementById("nouvelle-description");
+const inputPrix = document.getElementById("nouveau-prix");
+const inputImage = document.getElementById("nouveau-image");
+const inputStatus = document.getElementById("nouveau-status");
+// chargement des produits dans la page 
 let tousLesProduits = [];
 async function chargerProduits() {
     try{
@@ -69,6 +83,60 @@ const dialogProduit = document.getElementById("dialog-produit");
 fermerDialog.addEventListener("click",function(){
     dialogProduit.close();
 })
+// liaison de botton ajouter un produit avec dialogAjoutProduit 
+ouvrirFormulaire.addEventListener("click", function(){
+    dialogAjoutProduit.showModal();
+})
+fermerAjout.addEventListener("click", function(){
+    dialogAjoutProduit.close();
+})
+// Gestion de la soumission du formulaire d'ajout d'un produit
+formAjoutProduit.addEventListener("submit", function(event){
+    event.preventDefault();
+    const titre = inputTitre.value;
+    const description = inputDescription.value;
+    const prix = Number(inputPrix.value);
+    const status = inputStatus.value;
+    if(!validerTitre(titre) || !validerDescription(description) || !validerPrix(prix)){
+        return;
+    }
+    const image = inputImage.files[0];
+    const lecteur = new FileReader();
+    lecteur.readAsDataURL(image); 
+    lecteur.onload = async function(){
+      const imageUrl = lecteur.result;
+      const date = new Date().toISOString().split("T")[0];
+      const nouveauProduit = {
+        title : titre,
+        description : description,
+        price : prix,
+        image : imageUrl,
+        status : status,
+        date : date
+      };
+      const produitAjoute = await ajouterProduit(nouveauProduit)
+      tousLesProduits.unshift(produitAjoute);
+      afficherProduits(tousLesProduits);
+      formAjoutProduit.reset();
+    };  
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // Menu mobile
 const menuMobile = document.getElementById("menu-mobile");
 const sidebarMobile = document.getElementById("sidebar");
