@@ -3,8 +3,42 @@ export async function obtenirProduits() {
     return await request("/products");
 }
 
+export async function obtenirProduitParId(id){
+    return await request(`/products/${id}`)
+}
+
 export function rechercherProduits(produits, recherche){
     return produits.filter(function(produit){
         return produit.title.toLowerCase().includes(recherche.toLowerCase());
+    });
+}
+
+export function trierProduits(produits, critere){
+    const produitsTries =[...produits];
+    if(critere === "price"){
+        produitsTries.sort(function(a,b){
+            return a.price - b.price;
+        });
+    }
+    
+    if(critere === "title"){
+        produitsTries.sort(function(a,b){
+            return a.title.localeCompare(b.title);
+        });
+    }
+    if(critere === "date"){
+        produitsTries.sort(function(a,b){
+            return a.date.localeCompare(b.date);
+        });
+    }
+    return produitsTries;
+}
+
+export function filtrerProduits(produits, statut){
+    if(statut === ""){
+        return produits;
+    }
+    return produits.filter(function(produit){
+        return produit.status.toLowerCase()=== statut;
     });
 }

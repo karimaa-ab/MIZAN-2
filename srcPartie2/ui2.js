@@ -28,8 +28,12 @@ export function afficherProduits(produits){
         carte.appendChild(titre);
         carte.appendChild(prix);
         carte.appendChild(state);
+        const date = document.createElement("p");
+        date.textContent = produit.date;
+        date.className= "text-gray-500 text-sm mt-2";
+        carte.appendChild(date);
         const btns = document.createElement("div");
-        btns.className ="flex gap-2 mt-4";
+        btns.className ="flex flex-col gap-2 mt-4";
         const modify = document.createElement("button");
         modify.className = "flex-1 bg-[#713BD1] text-white rounded-lg py-2 text-sm";
         modify.textContent = "Modifier";
@@ -39,7 +43,13 @@ export function afficherProduits(produits){
         supprimer.textContent = "Supprimer";  
         supprimer.type = "button";
         btns.appendChild(modify);
-        btns.appendChild(supprimer);   
+        btns.appendChild(supprimer);  
+        const details = document.createElement("button");
+        details.textContent="Voir détails";
+        details.type = "button";
+        details.className = "btn-details flex-1 border border-[#713BD1] text-[#713BD1] rounded-lg py-2 text-sm";
+        details.dataset.id = produit.id;
+        btns.appendChild(details);
         carte.appendChild(btns);
         listeProduits.appendChild(carte);   
     });
