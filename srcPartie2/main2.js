@@ -24,6 +24,10 @@ const inputDescription = document.getElementById("nouvelle-description");
 const inputPrix = document.getElementById("nouveau-prix");
 const inputImage = document.getElementById("nouveau-image");
 const inputStatus = document.getElementById("nouveau-status");
+const btnAjouterProduit = document.getElementById("btn-ajouter-produit");
+const indicateurChargement = document.getElementById("indicateur-chargement");
+const erreurProduits = document.getElementById("erreur-produits");
+const succesProduit = document.getElementById("succes-produit");
 // chargement des produits dans la page 
 let tousLesProduits = [];
 async function chargerProduits() {
@@ -91,34 +95,59 @@ fermerAjout.addEventListener("click", function(){
     dialogAjoutProduit.close();
 })
 // Gestion de la soumission du formulaire d'ajout d'un produit
-formAjoutProduit.addEventListener("submit", function(event){
+formAjoutProduit.addEventListener("submit",async function(event){
     event.preventDefault();
     const titre = inputTitre.value;
     const description = inputDescription.value;
     const prix = Number(inputPrix.value);
     const status = inputStatus.value;
     if(!validerTitre(titre) || !validerDescription(description) || !validerPrix(prix)){
+        erreurProduits.textContent= "Veuillez vérifier le titre, la description et le prix.";
+        erreurProduits.classList.remove("hidden");
         return;
     }
-    const image = inputImage.files[0];
-    const lecteur = new FileReader();
-    lecteur.readAsDataURL(image); 
-    lecteur.onload = async function(){
-      const imageUrl = lecteur.result;
-      const date = new Date().toISOString().split("T")[0];
-      const nouveauProduit = {
-        title : titre,
-        description : description,
-        price : prix,
-        image : imageUrl,
-        status : status,
-        date : date
-      };
-      const produitAjoute = await ajouterProduit(nouveauProduit)
-      tousLesProduits.unshift(produitAjoute);
-      afficherProduits(tousLesProduits);
-      formAjoutProduit.reset();
-    };  
+    btnAjouterProduit.disabled = true;
+    indicateurChargement.classList.remove("hidden");
+    try{
+       const image = inputImage.files[0];
+       let imageUrl = "";
+       if (image) {
+          imageUrl = await new Promise(function(resolve, reject) {
+            const lecteur = new FileReader();
+            lecteur.onload = function() {
+              resolve(lecteur.result);
+            };
+            lecteur.onerror = function() {
+              reject(lecteur.error);
+            };
+            lecteur.readAsDataURL(image);
+          });
+        }
+        const date = new Date().toISOString().split("T")[0];
+        const nouveauProduit = {
+            title : titre,
+            description : description,
+            price : prix,
+            image : imageUrl,
+            status : status,
+            date : date
+        };
+        const produitAjoute = await ajouterProduit(nouveauProduit)
+        tousLesProduits.unshift(produitAjoute);
+        afficherProduits(tousLesProduits);
+        formAjoutProduit.reset();
+        erreurProduits.classList.add("hidden");
+        succesProduit.textContent= "Produit ajouté avec succès !";
+        succesProduit.classList.remove("hidden");
+    }catch(error){
+        succesProduit.classList.add("hidden");
+        erreurProduits.textContent= error.message;
+        erreurProduits.classList.remove("hidden");
+    }finally{
+        btnAjouterProduit.disabled = false;
+        indicateurChargement.classList.add("hidden");
+    }
+
 })
 
 

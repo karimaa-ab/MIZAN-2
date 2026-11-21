@@ -6,12 +6,14 @@ export function afficherProduits(produits){
         carte.className= "border border-gray-100 rounded-xl p-3 hover:shadow-md transition";
         const contImg = document.createElement("div");
         contImg.className = "bg-[#F7F3FC] rounded-lg h-40 flex items-center justify-center";
-        const image = document.createElement("img");
-        image.setAttribute("src", produit.image);
-        image.setAttribute("alt", produit.title);
-        image.className= "h-32 w-full object-contain";
-        contImg.appendChild(image);
-        carte.appendChild(contImg);
+        if(produit.image){
+           const image = document.createElement("img");
+           image.setAttribute("src", produit.image);
+           image.setAttribute("alt", produit.title);
+           image.className= "h-32 w-full object-contain";
+           contImg.appendChild(image);
+           carte.appendChild(contImg);
+        }
         const titre = document.createElement("h3");
         titre.textContent= produit.title;
         titre.className= "font-bold mt-4";

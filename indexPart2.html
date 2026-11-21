@@ -141,7 +141,7 @@
                                 <option value="date">Date</option>
                             </select>
                         </div>
-                        <p id="erreur-produits" class="hidden text-red-600 text-sm mb-4" role="alert"></p>
+                        
                         <div id="liste-produits" class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 sm:gap-5"></div>
                         <dialog id="dialog-produit" class="m-auto rounded-xl p-6">
                             <h2 id="detail-titre"></h2>
@@ -153,6 +153,8 @@
                         <dialog id="dialog-ajout-produit" class="m-auto rounded-xl p-6">
                             <h2>Ajouter un produit</h2>
                             <form id="form-ajout-produit" class="flex flex-col gap-4">
+                                <p id="erreur-produits" class="hidden text-red-600 text-sm"></p>
+                                <p id="succes-produit" class="hidden text-green-600 text-sm"></p>
                                 <div>
                                     <label for="nouveau-titre" class="block mb-1">Titre:</label>
                                     <input type="text" id="nouveau-titre" class="w-full border border-gray-300 rounded-lg p-2">
