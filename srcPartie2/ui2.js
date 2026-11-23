@@ -51,6 +51,8 @@ export function afficherProduits(produits){
         supprimer.className = "border border-red-300 text-red-600 rounded-lg px-3 py-2 text-sm";
         supprimer.textContent = "Supprimer";  
         supprimer.type = "button";
+        supprimer.classList.add("btn-supprimer");
+        supprimer.dataset.id = produit.id;
         btns.appendChild(modify);
         btns.appendChild(supprimer);  
         const details = document.createElement("button");

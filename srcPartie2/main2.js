@@ -5,7 +5,8 @@ import { obtenirProduits,
         obtenirProduitParId,
         ajouterProduit,
         modifierProduit,
-        modifierPartiellementProduit
+        modifierPartiellementProduit,
+        supprimerProduit
     } from "./products.js";
 import { afficherProduits } from "./ui2.js";
 import { validerTitre,
@@ -42,10 +43,16 @@ const btnModifierProduit = document.getElementById("btn-modifier-produit");
 const fermerModification = document.getElementById("fermer-modification");
 const erreurModification = document.getElementById("erreur-modification");
 const indicateurModification = document.getElementById("indicateur-modification");
+// Éléments du formulaire de suppression
+const dialogSuppression = document.getElementById("dialog-suppression");
+const confirmerSuppression = document.getElementById("confirmer-suppression");
+const annulerSuppression = document.getElementById("annuler-suppression");
+const erreurSuppression = document.getElementById("erreur-suppression");
 
 // chargement des produits dans la page 
 let tousLesProduits = [];
 let produitIdAModifier = null;
+let produitIdASupprimer;
 async function chargerProduits() {
     try{
         tousLesProduits = await obtenirProduits();
@@ -125,6 +132,11 @@ async function gererClicProduit(event){
         tousLesProduits[index]= resultat ;
         afficherProduits(tousLesProduits);
     }
+    if(bouton.classList.contains("btn-supprimer")){
+        const id = bouton.dataset.id;
+        produitIdASupprimer = id;
+        dialogSuppression.showModal();
+    }
 }
 listeProduits.addEventListener("click",gererClicProduit)
 const fermerDialog = document.getElementById("fermer-dialog");
@@ -132,6 +144,26 @@ const dialogProduit = document.getElementById("dialog-produit");
 fermerDialog.addEventListener("click",function(){
     dialogProduit.close();
 })
+annulerSuppression.addEventListener("click", function(){
+    dialogSuppression.close();
+});
+confirmerSuppression.addEventListener("click", async function() {
+    const index = tousLesProduits.findIndex(function(produit){
+        return produit.id == produitIdASupprimer;
+    });
+    const produitSupprime = tousLesProduits[index];
+    tousLesProduits.splice(index,1);
+    afficherProduits(tousLesProduits);
+    dialogSuppression.close();
+    try{
+        await supprimerProduit(produitIdASupprimer);
+    }catch(error){
+        tousLesProduits.splice(index,0,produitSupprime);
+        afficherProduits(tousLesProduits);
+        erreurSuppression.textContent = "Erreur lors de la suppression du produit.";
+        erreurSuppression.classList.remove("hidden");
+    }
+});
 // liaison de botton ajouter un produit avec dialogAjoutProduit 
 ouvrirFormulaire.addEventListener("click", function(){
     dialogAjoutProduit.showModal();
