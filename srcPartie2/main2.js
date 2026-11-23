@@ -4,7 +4,8 @@ import { obtenirProduits,
         filtrerProduits,
         obtenirProduitParId,
         ajouterProduit,
-        modifierProduit
+        modifierProduit,
+        modifierPartiellementProduit
     } from "./products.js";
 import { afficherProduits } from "./ui2.js";
 import { validerTitre,
@@ -105,6 +106,24 @@ async function gererClicProduit(event){
         modifierPrix.value = product.price;
         modifierStatus.value = product.status;
         dialogModifierProduit.showModal();
+    }
+    if(bouton.classList.contains("btn-statut")){
+        const id = bouton.dataset.id;
+        produitIdAModifier = id;
+        const product = await obtenirProduitParId(id);
+        console.log(product);
+        let nouveauStatut;
+        if(product.status === "Disponible"){
+            nouveauStatut = "Réservé";
+        }else{
+            nouveauStatut = "Disponible";
+        }
+        const resultat = await modifierPartiellementProduit(id, {status: nouveauStatut});
+        const index = tousLesProduits.findIndex(function(produit){
+            return produit.id == id;
+        });
+        tousLesProduits[index]= resultat ;
+        afficherProduits(tousLesProduits);
     }
 }
 listeProduits.addEventListener("click",gererClicProduit)
@@ -233,7 +252,7 @@ formModifierProduit.addEventListener("submit",async function(event){
         indicateurModification.classList.add("hidden");
     }
 });
-
+ 
 
 
 

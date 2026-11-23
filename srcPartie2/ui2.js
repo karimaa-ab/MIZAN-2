@@ -30,6 +30,12 @@ export function afficherProduits(produits){
         carte.appendChild(titre);
         carte.appendChild(prix);
         carte.appendChild(state);
+        const btnStatut = document.createElement("button");
+        btnStatut.textContent = "Changer le statut";
+        btnStatut.type = "button";
+        btnStatut.className = "btn-statut text-sm pl-2";
+        btnStatut.dataset.id = produit.id;
+        carte.appendChild(btnStatut);
         const date = document.createElement("p");
         date.textContent = produit.date;
         date.className= "text-gray-500 text-sm mt-2";

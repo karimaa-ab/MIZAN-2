@@ -56,4 +56,12 @@ export async function modifierProduit(id, produitModifie) {
         body: JSON.stringify(produitModifie)
     });
 }
+// modifier un produit avec patch
+export async function modifierPartiellementProduit(id, modifications) {
+    return await request(`/products/${id}`, {
+        method : "PATCH",
+        body : JSON.stringify(modifications)
+
+    });  
+}
 
