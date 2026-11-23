@@ -6,12 +6,14 @@ export function afficherProduits(produits){
         carte.className= "border border-gray-100 rounded-xl p-3 hover:shadow-md transition";
         const contImg = document.createElement("div");
         contImg.className = "bg-[#F7F3FC] rounded-lg h-40 flex items-center justify-center";
-        const image = document.createElement("img");
-        image.setAttribute("src", produit.image);
-        image.setAttribute("alt", produit.title);
-        image.className= "h-32 w-full object-contain";
-        contImg.appendChild(image);
-        carte.appendChild(contImg);
+        if(produit.image){
+           const image = document.createElement("img");
+           image.setAttribute("src", produit.image);
+           image.setAttribute("alt", produit.title);
+           image.className= "h-32 w-full object-contain";
+           contImg.appendChild(image);
+           carte.appendChild(contImg);
+        }
         const titre = document.createElement("h3");
         titre.textContent= produit.title;
         titre.className= "font-bold mt-4";
@@ -35,9 +37,10 @@ export function afficherProduits(produits){
         const btns = document.createElement("div");
         btns.className ="flex flex-col gap-2 mt-4";
         const modify = document.createElement("button");
-        modify.className = "flex-1 bg-[#713BD1] text-white rounded-lg py-2 text-sm";
+        modify.className = "btn-modifier flex-1 bg-[#713BD1] text-white rounded-lg py-2 text-sm";
         modify.textContent = "Modifier";
         modify.type = "button";
+        modify.dataset.id= produit.id;
         const supprimer = document.createElement("button");
         supprimer.className = "border border-red-300 text-red-600 rounded-lg px-3 py-2 text-sm";
         supprimer.textContent = "Supprimer";  

@@ -49,3 +49,11 @@ export async function ajouterProduit(nouveauProduit) {
         body : JSON.stringify(nouveauProduit)
     }); 
 }
+// Modifier un produit complètement avec PUT
+export async function modifierProduit(id, produitModifie) {
+    return await request(`/products/${id}`, {
+        method: "PUT",
+        body: JSON.stringify(produitModifie)
+    });
+}
+
