@@ -72,37 +72,7 @@
                     </div>
                 </section>
 
-                <section id="statistiques" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 my-8">
-                    <div class="bg-white rounded-xl shadow-sm p-5 sm:p-6 flex items-center gap-4">
-                        <div class="bg-purple-100 rounded-xl p-3 sm:p-4 shrink-0">
-                            <img src="imagesPartie2/produits.png" alt="" class="w-8 h-8 object-contain">
-                        </div>
-                        <div class="min-w-0">
-                            <p class="text-gray-500 text-sm">Total des produits</p>
-                            <p id="total-produits" class="text-2xl sm:text-3xl font-bold text-[#35158C] mt-1">  -- </p>
-                        </div>
-                    </div>
-                    <div class="bg-white rounded-xl shadow-sm p-5 sm:p-6 flex items-center gap-4">
-                        <div class="bg-purple-100 rounded-xl p-3 sm:p-4 shrink-0">
-                            <img src="imagesPartie2/reservations.png" alt="" class="w-8 h-8 object-contain">
-                        </div>
-                        <div class="min-w-0">
-                            <p class="text-gray-500 text-sm"> Réservations </p>
-                            <p id="total-reservations" class="text-2xl sm:text-3xl font-bold text-[#35158C] mt-1"> -- </p>
-                        </div>
-                    </div>
-                    <div class="bg-white rounded-xl shadow-sm p-5 sm:p-6 flex items-center gap-4">
-                        <div class="bg-purple-100 rounded-xl p-3 sm:p-4 shrink-0">
-                            <img src="imagesPartie2/statistics.png" alt="" class="w-8 h-8 object-contain">
-                        </div>
-                        <div class="min-w-0">
-                            <p class="text-gray-500 text-sm"> Produits disponibles </p>
-                            <p id="produits-disponibles" class="text-2xl sm:text-3xl font-bold text-[#35158C] mt-1"> -- </p>
-                        </div>
-                    </div>
-                </section>
-
-                <section id="produits" class="bg-white rounded-xl shadow-sm mb-8 overflow-hidden">
+                <section id="produits" class="bg-white rounded-xl shadow-sm mb-8 mt-6 overflow-hidden">
                     <div class="bg-[#35158C] text-white px-4 sm:px-6 py-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
 
                         <h2 class="text-lg sm:text-xl font-bold"> Gestion des produits</h2>
@@ -141,7 +111,7 @@
                                 <option value="date">Date</option>
                             </select>
                         </div>
-                        
+
                         <div id="liste-produits" class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 sm:gap-5"></div>
                         <dialog id="dialog-produit" class="m-auto rounded-xl p-6">
                             <h2 id="detail-titre"></h2>
@@ -184,7 +154,41 @@
                                 </div>
                                 <p id="indicateur-chargement" class="hidden">Envoi en cours...</p>
                             </form>
-                        </dialog>             
+                        </dialog> 
+                        <dialog id="dialog-modifier-produit" class="m-auto rounded-xl p-6">
+                          <h2>Modifier un produit</h2>
+                          <form id="form-modifier-produit" class="flex flex-col gap-4">
+                               <p id="erreur-modification" class="hidden text-red-600 text-sm"></p>
+                            <div>
+                                <label for="modifier-titre" class="block mb-1">Titre :</label>
+                                <input type="text" id="modifier-titre" class="w-full border border-gray-300 rounded-lg p-2">
+                            </div>
+                            <div>
+                                <label for="modifier-description" class="block mb-1">Description :</label>
+                                <textarea id="modifier-description" class="w-full border border-gray-300 rounded-lg p-2"></textarea>
+                            </div>
+                            <div>
+                               <label for="modifier-prix" class="block mb-1">Prix :</label>
+                               <input type="number" id="modifier-prix" class="w-full border border-gray-300 rounded-lg p-2">
+                            </div>
+                            <div>
+                                <label for="modifier-image" class="block mb-1">Image :</label>
+                                <input type="file" id="modifier-image" accept="image/*">
+                            </div>
+                            <div>
+                                <label for="modifier-status" class="block mb-1">Statut :</label>
+                                <select id="modifier-status" class="w-full border border-gray-300 rounded-lg p-2">
+                                    <option value="Disponible">Disponible</option>
+                                    <option value="Réservé">Réservé</option>
+                                </select>
+                            </div>
+                            <div class="flex gap-3">
+                               <button type="submit" id="btn-modifier-produit" class="bg-purple-700 text-white px-4 py-2 rounded-lg"> Modifier</button>
+                               <button type="button" id="fermer-modification" class="border px-4 py-2 rounded-lg">Annuler</button>
+                            </div>
+                            <p id="indicateur-modification" class="hidden">Modification en cours...</p>
+                          </form>
+                        </dialog>            
                     </div>
                 </section>
 

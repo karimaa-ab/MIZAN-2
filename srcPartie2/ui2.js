@@ -37,9 +37,10 @@ export function afficherProduits(produits){
         const btns = document.createElement("div");
         btns.className ="flex flex-col gap-2 mt-4";
         const modify = document.createElement("button");
-        modify.className = "flex-1 bg-[#713BD1] text-white rounded-lg py-2 text-sm";
+        modify.className = "btn-modifier flex-1 bg-[#713BD1] text-white rounded-lg py-2 text-sm";
         modify.textContent = "Modifier";
         modify.type = "button";
+        modify.dataset.id= produit.id;
         const supprimer = document.createElement("button");
         supprimer.className = "border border-red-300 text-red-600 rounded-lg px-3 py-2 text-sm";
         supprimer.textContent = "Supprimer";  

@@ -3,7 +3,8 @@ import { obtenirProduits,
         trierProduits,
         filtrerProduits,
         obtenirProduitParId,
-        ajouterProduit 
+        ajouterProduit,
+        modifierProduit
     } from "./products.js";
 import { afficherProduits } from "./ui2.js";
 import { validerTitre,
@@ -28,8 +29,22 @@ const btnAjouterProduit = document.getElementById("btn-ajouter-produit");
 const indicateurChargement = document.getElementById("indicateur-chargement");
 const erreurProduits = document.getElementById("erreur-produits");
 const succesProduit = document.getElementById("succes-produit");
+// Éléments du formulaire de modification
+const dialogModifierProduit = document.getElementById("dialog-modifier-produit");
+const formModifierProduit = document.getElementById("form-modifier-produit");
+const modifierTitre = document.getElementById("modifier-titre");
+const modifierDescription = document.getElementById("modifier-description");
+const modifierPrix = document.getElementById("modifier-prix");
+const modifierImage = document.getElementById("modifier-image");
+const modifierStatus = document.getElementById("modifier-status");
+const btnModifierProduit = document.getElementById("btn-modifier-produit");
+const fermerModification = document.getElementById("fermer-modification");
+const erreurModification = document.getElementById("erreur-modification");
+const indicateurModification = document.getElementById("indicateur-modification");
+
 // chargement des produits dans la page 
 let tousLesProduits = [];
+let produitIdAModifier = null;
 async function chargerProduits() {
     try{
         tousLesProduits = await obtenirProduits();
@@ -73,12 +88,23 @@ async function gererClicProduit(event){
     const bouton = event.target;
     if(bouton.classList.contains("btn-details")){
         const id = bouton.dataset.id;
+        produitIdAModifier = id;
         const product = await obtenirProduitParId(id); 
         document.getElementById("detail-titre").textContent= product.title;
         document.getElementById( "detail-description").textContent= product.description;
         document.getElementById("detail-prix").textContent = product.price + " MAD";
         document.getElementById("detail-statut").textContent = product.status;
         document.getElementById("dialog-produit").showModal();
+    }
+    if(bouton.classList.contains("btn-modifier")){
+        const id = bouton.dataset.id;
+        produitIdAModifier = id;
+        const product = await obtenirProduitParId(id);
+        modifierTitre.value = product.title;
+        modifierDescription.value = product.description;
+        modifierPrix.value = product.price;
+        modifierStatus.value = product.status;
+        dialogModifierProduit.showModal();
     }
 }
 listeProduits.addEventListener("click",gererClicProduit)
@@ -147,12 +173,66 @@ formAjoutProduit.addEventListener("submit",async function(event){
         btnAjouterProduit.disabled = false;
         indicateurChargement.classList.add("hidden");
     }
-
 })
+// modifier produit dialog
+fermerModification.addEventListener("click", function(){
+    dialogModifierProduit.close();
+});
+formModifierProduit.addEventListener("submit",async function(event){
+    event.preventDefault();
+    const titre = modifierTitre.value;
+    const description = modifierDescription.value;
+    const prix = Number(modifierPrix.value);
+    const status = modifierStatus.value ;
+    if(!validerTitre(titre) || !validerDescription(description) || !validerPrix(prix)){
+        erreurModification.textContent = "Veuillez vérifier le titre, la description et le prix.";
+        erreurModification.classList.remove("hidden");
+        return;
+    }
+    try{
+       btnModifierProduit.disabled = true;
+       indicateurModification.classList.remove("hidden");
+       const produitActuel = await obtenirProduitParId(produitIdAModifier);
+       let imageUrl = produitActuel.image;
+       const image = modifierImage.files[0];
+       if(image){
+        imageUrl = await new Promise(function(resolve, reject){
+            const lecteur = new FileReader();
+            lecteur.onload = function(){
+                resolve(lecteur.result);
+            };
+            lecteur.onerror = function(){
+                reject(lecteur.error);
+            };
+            lecteur.readAsDataURL(image);
+        });
+       }
+       const produitModifie = {
+         title: titre,
+         description: description,
+         price: prix,
+         image: imageUrl,
+         status: status,
+         date: produitActuel.date
+        };
+        const resultat = await modifierProduit(produitIdAModifier, produitModifie);
+        const index = tousLesProduits.findIndex(function(produit){
+           return produit.id == produitIdAModifier;
+        });
+        tousLesProduits[index] = resultat;
+        afficherProduits(tousLesProduits);
+        dialogModifierProduit.close();
+        erreurModification.classList.add("hidden");
+    }catch(erreur){
+            console.log(erreur);
 
-
-
-
+        erreurModification.textContent= "Une erreur est survenue. Veuillez réessayer.";
+        erreurModification.classList.remove("hidden");
+    }finally{
+        btnModifierProduit.disabled = false;
+        indicateurModification.classList.add("hidden");
+    }
+});
 
 
 
