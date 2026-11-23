@@ -64,4 +64,10 @@ export async function modifierPartiellementProduit(id, modifications) {
 
     });  
 }
-
+// supprimer un produit avec DELETE
+export async function supprimerProduit(id) {
+    return await request(`/products/${id}`, {
+        method: "DELETE"
+    });
+    
+}

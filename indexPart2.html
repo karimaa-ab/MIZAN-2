@@ -34,11 +34,6 @@
                     <span>Réservations</span>
                 </a>
 
-                <a href="#statistiques" class="flex items-center gap-3 hover:bg-white/20 rounded-lg px-4 py-3 transition">
-                    <img src="imagesPartie2/statistics.png" alt="" class="w-6 h-6 object-contain">
-                    <span>Statistiques</span>
-                </a>
-
                 <a href="#parametres" class="flex items-center gap-3 hover:bg-white/20 rounded-lg px-4 py-3 transition">
                     <img src="imagesPartie2/setting.png" alt="" class="w-6 h-6 object-contain">
                     <span>Paramètres</span>
@@ -188,7 +183,17 @@
                             </div>
                             <p id="indicateur-modification" class="hidden">Modification en cours...</p>
                           </form>
-                        </dialog>            
+                        </dialog>  
+                        <!-- dialog de confirmation de suppression-->     
+                         <dialog id="dialog-suppression" class="m-auto rounded-xl p-6">
+                            <h2 class="text-lg font-bold mb-3">Confirmer la suppression</h2>
+                            <p class="mb-4">Êtes-vous sûr de vouloir supprimer ce produit ?</p>
+                            <p id="erreur-suppression" class="hidden text-red-600 text-sm"></p>
+                            <div class="flex gap-3">
+                                <button type="button" id="confirmer-suppression" class="bg-red-600 text-white px-4 py-2 rounded-lg">Supprimer </button>
+                                <button type="button" id="annuler-suppression" class="border px-4 py-2 rounded-lg"> Annuler</button>
+                            </div>
+                         </dialog>     
                     </div>
                 </section>
 
