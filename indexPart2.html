@@ -85,7 +85,7 @@
                                        class="w-full border border-gray-200 rounded-lg pl-10 pr-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#35158C]"
                                     >
                             </div>
-                            
+
                             <select id="filtre-statut" class="w-full lg:w-auto border border-gray-200 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#35158C]">
                                 <option value="">Tous les statuts</option>
                                 <option value="disponible">Disponible</option>
@@ -102,8 +102,13 @@
                         <button id="reinitialiser-filtres" type="button" class="hidden border border-purple-600 text-purple-700 px-4 py-2 rounded-lg">Réinitialiser les filtres</button>
 
                         <p id="chargement-produits" class="hidden text-center text-purple-700 py-6">Chargement des produits...</p>
+                        <div id="erreur-chargement" class="hidden text-center py-6">
+                            <p id="message-erreur-chargement" class="text-red-600 mb-3"></p>
+                            <button id="reessayer" type="button" class="bg-[#35158C] text-white px-4 py-2 rounded-lg">Réessayer</button>
+                        </div>
                         <p id="etat-vide" class="hidden text-center text-gray-500 py-6">Aucun produit disponible.</p>
                         <p id="aucun-resultat" class="hidden text-center text-gray-500 py-6">Aucun résultat trouvé.</p>
+                        <p id="succes-statut" class="hidden text-green-600 text-sm"></p>
                         <div id="liste-produits" class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 sm:gap-5"></div>
                         <dialog id="dialog-produit" class="m-auto rounded-xl p-6">
                             <h2 id="detail-titre"></h2>
@@ -116,7 +121,6 @@
                             <h2>Ajouter un produit</h2>
                             <form id="form-ajout-produit" class="flex flex-col gap-4">
                                 <p id="erreur-produits" class="hidden text-red-600 text-sm"></p>
-                                <p id="succes-produit" class="hidden text-green-600 text-sm"></p>
                                 <div>
                                     <label for="nouveau-titre" class="block mb-1">Titre:</label>
                                     <input type="text" id="nouveau-titre" class="w-full border border-gray-300 rounded-lg p-2">
@@ -147,6 +151,8 @@
                                 <p id="indicateur-chargement" class="hidden">Envoi en cours...</p>
                             </form>
                         </dialog> 
+                        <p id="succes-produit" class="hidden text-green-600 text-sm"></p>
+
                         <dialog id="dialog-modifier-produit" class="m-auto rounded-xl p-6">
                           <h2>Modifier un produit</h2>
                           <form id="form-modifier-produit" class="flex flex-col gap-4">
@@ -181,6 +187,7 @@
                             <p id="indicateur-modification" class="hidden">Modification en cours...</p>
                           </form>
                         </dialog>  
+                        <p id="succes-modification" class="hidden text-green-600 text-sm"></p>
                         <!-- dialog de confirmation de suppression-->     
                          <dialog id="dialog-suppression" class="m-auto rounded-xl p-6">
                             <h2 class="text-lg font-bold mb-3">Confirmer la suppression</h2>
@@ -190,7 +197,8 @@
                                 <button type="button" id="confirmer-suppression" class="bg-red-600 text-white px-4 py-2 rounded-lg">Supprimer </button>
                                 <button type="button" id="annuler-suppression" class="border px-4 py-2 rounded-lg"> Annuler</button>
                             </div>
-                         </dialog>     
+                         </dialog> 
+                         <p id="succes-suppression" class="hidden text-green-600 text-sm"></p>    
                     </div>
                 </section>
 
