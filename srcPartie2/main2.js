@@ -29,6 +29,7 @@ const inputImage = document.getElementById("nouveau-image");
 const inputStatus = document.getElementById("nouveau-status");
 const btnAjouterProduit = document.getElementById("btn-ajouter-produit");
 const indicateurChargement = document.getElementById("indicateur-chargement");
+const chargementProduits = document.getElementById("chargement-produits");
 const erreurProduits = document.getElementById("erreur-produits");
 const succesProduit = document.getElementById("succes-produit");
 // Éléments du formulaire de modification
@@ -48,12 +49,16 @@ const dialogSuppression = document.getElementById("dialog-suppression");
 const confirmerSuppression = document.getElementById("confirmer-suppression");
 const annulerSuppression = document.getElementById("annuler-suppression");
 const erreurSuppression = document.getElementById("erreur-suppression");
+const etatVide = document.getElementById("etat-vide");
+const aucunResultat = document.getElementById("aucun-resultat");
+const reinitialiserFiltres = document.getElementById("reinitialiser-filtres");
 
 // chargement des produits dans la page 
 let tousLesProduits = [];
 let produitIdAModifier = null;
 let produitIdASupprimer;
 async function chargerProduits() {
+    chargementProduits.classList.remove("hidden");
     try{
         tousLesProduits = await obtenirProduits();
         afficherProduits(tousLesProduits);
@@ -61,6 +66,8 @@ async function chargerProduits() {
         const erreurProduits = document.getElementById("erreur-produits");
         erreurProduits.textContent = error.message;
         erreurProduits.classList.remove("hidden");
+    }finally{
+        chargementProduits.classList.add("hidden");
     }
 }
 chargerProduits();
@@ -87,10 +94,24 @@ function actualiserProduits(){
     const resultatFiltrer = filtrerProduits(resultatRecherche, filtreStatut.value);
     const resultatTrier = trierProduits(resultatFiltrer, triProduits.value);
     afficherProduits(resultatTrier);
+    if(tousLesProduits.length > 0 && resultatTrier.length === 0){
+        etatVide.classList.add("hidden");
+        aucunResultat.classList.remove("hidden");
+        reinitialiserFiltres.classList.remove("hidden");
+    }else{
+        aucunResultat.classList.add("hidden");
+        reinitialiserFiltres.classList.add("hidden")
+    }
 }
 rechercheProduit.addEventListener("input", actualiserProduits);
 filtreStatut.addEventListener("change", actualiserProduits);
 triProduits.addEventListener("change", actualiserProduits);
+reinitialiserFiltres.addEventListener("click", function(){
+    rechercheProduit.value = "";
+    filtreStatut.value = "";
+    triProduits.value = "";
+    actualiserProduits();
+})
 // GET du détail d'un article
 async function gererClicProduit(event){
     const bouton = event.target;

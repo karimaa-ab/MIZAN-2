@@ -1,6 +1,12 @@
 export function afficherProduits(produits){
     const listeProduits = document.getElementById("liste-produits");
     listeProduits.replaceChildren();
+        const etatVide = document.getElementById("etat-vide");
+        if (produits.length === 0) {
+           etatVide.classList.remove("hidden");
+        } else {
+           etatVide.classList.add("hidden");
+        }
     produits.forEach(function(produit) {
         const carte = document.createElement("article");
         carte.className= "border border-gray-100 rounded-xl p-3 hover:shadow-md transition";
