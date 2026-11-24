@@ -52,6 +52,12 @@ const erreurSuppression = document.getElementById("erreur-suppression");
 const etatVide = document.getElementById("etat-vide");
 const aucunResultat = document.getElementById("aucun-resultat");
 const reinitialiserFiltres = document.getElementById("reinitialiser-filtres");
+const erreurChargement = document.getElementById("erreur-chargement");
+const messageErreurChargement = document.getElementById("message-erreur-chargement");
+const reessayer = document.getElementById("reessayer");
+const succesModification = document.getElementById("succes-modification");
+const succesStatut = document.getElementById("succes-statut");
+const succesSuppression = document.getElementById("succes-suppression");
 
 // chargement des produits dans la page 
 let tousLesProduits = [];
@@ -62,10 +68,19 @@ async function chargerProduits() {
     try{
         tousLesProduits = await obtenirProduits();
         afficherProduits(tousLesProduits);
+        erreurChargement.classList.add("hidden");
+        messageErreurChargement.textContent = "";
     }catch(error){
-        const erreurProduits = document.getElementById("erreur-produits");
-        erreurProduits.textContent = error.message;
-        erreurProduits.classList.remove("hidden");
+        erreurChargement.classList.remove("hidden");
+        if(error.status === 404){
+           messageErreurChargement.textContent = "Ressource introuvable."; 
+        }else if(error.status === 500){
+            messageErreurChargement.textContent = "Erreur interne du serveur. Veuillez réessayer.";
+        }else if(error.type === "offline"){
+            messageErreurChargement.textContent  = error.message;
+        }else{
+            messageErreurChargement.textContent = error.message;
+        }
     }finally{
         chargementProduits.classList.add("hidden");
     }
@@ -152,6 +167,11 @@ async function gererClicProduit(event){
         });
         tousLesProduits[index]= resultat ;
         afficherProduits(tousLesProduits);
+        succesStatut.textContent = "Statut modifié avec succès !";
+        succesStatut.classList.remove("hidden");
+        setTimeout(function(){
+           succesStatut.classList.add("hidden");
+        }, 5000);
     }
     if(bouton.classList.contains("btn-supprimer")){
         const id = bouton.dataset.id;
@@ -168,23 +188,7 @@ fermerDialog.addEventListener("click",function(){
 annulerSuppression.addEventListener("click", function(){
     dialogSuppression.close();
 });
-confirmerSuppression.addEventListener("click", async function() {
-    const index = tousLesProduits.findIndex(function(produit){
-        return produit.id == produitIdASupprimer;
-    });
-    const produitSupprime = tousLesProduits[index];
-    tousLesProduits.splice(index,1);
-    afficherProduits(tousLesProduits);
-    dialogSuppression.close();
-    try{
-        await supprimerProduit(produitIdASupprimer);
-    }catch(error){
-        tousLesProduits.splice(index,0,produitSupprime);
-        afficherProduits(tousLesProduits);
-        erreurSuppression.textContent = "Erreur lors de la suppression du produit.";
-        erreurSuppression.classList.remove("hidden");
-    }
-});
+
 // liaison de botton ajouter un produit avec dialogAjoutProduit 
 ouvrirFormulaire.addEventListener("click", function(){
     dialogAjoutProduit.showModal();
@@ -237,6 +241,10 @@ formAjoutProduit.addEventListener("submit",async function(event){
         erreurProduits.classList.add("hidden");
         succesProduit.textContent= "Produit ajouté avec succès !";
         succesProduit.classList.remove("hidden");
+        dialogAjoutProduit.close();
+        setTimeout(function(){
+            succesProduit.classList.add("hidden");
+        }, 5000);
     }catch(error){
         succesProduit.classList.add("hidden");
         erreurProduits.textContent= error.message;
@@ -245,11 +253,9 @@ formAjoutProduit.addEventListener("submit",async function(event){
         btnAjouterProduit.disabled = false;
         indicateurChargement.classList.add("hidden");
     }
-})
-// modifier produit dialog
-fermerModification.addEventListener("click", function(){
-    dialogModifierProduit.close();
 });
+// modifier produit dialog
+
 formModifierProduit.addEventListener("submit",async function(event){
     event.preventDefault();
     const titre = modifierTitre.value;
@@ -295,6 +301,11 @@ formModifierProduit.addEventListener("submit",async function(event){
         afficherProduits(tousLesProduits);
         dialogModifierProduit.close();
         erreurModification.classList.add("hidden");
+        succesModification.textContent = "Produit modifié avec succès !";
+        succesModification.classList.remove("hidden");
+        setTimeout(function(){
+           succesModification.classList.add("hidden");
+        }, 5000);
     }catch(erreur){
             console.log(erreur);
 
@@ -304,6 +315,36 @@ formModifierProduit.addEventListener("submit",async function(event){
         btnModifierProduit.disabled = false;
         indicateurModification.classList.add("hidden");
     }
+});
+fermerModification.addEventListener("click", function(){
+    dialogModifierProduit.close();
+});
+// confirmer supprission 
+confirmerSuppression.addEventListener("click", async function() {
+    const index = tousLesProduits.findIndex(function(produit){
+        return produit.id == produitIdASupprimer;
+    });
+    const produitSupprime = tousLesProduits[index];
+    tousLesProduits.splice(index,1);
+    afficherProduits(tousLesProduits);
+    dialogSuppression.close();
+    try{
+        await supprimerProduit(produitIdASupprimer);
+        succesSuppression.textContent = "Produit supprimé avec succès !";
+        succesSuppression.classList.remove("hidden");
+        setTimeout(function(){
+            succesSuppression.classList.add("hidden");
+        }, 5000);
+    }catch(error){
+        tousLesProduits.splice(index,0,produitSupprime);
+        afficherProduits(tousLesProduits);
+        erreurSuppression.textContent = "Erreur lors de la suppression du produit.";
+        erreurSuppression.classList.remove("hidden");
+    }
+});
+// botton ressayer 
+reessayer.addEventListener("click", function(){
+    chargerProduits();
 });
  
 
