@@ -1,23 +1,4 @@
 {
-  "products": [
-    {
-      "title": "sdcfgvbh",
-      "description": "sdtrfzuhjnkhbgvcf",
-      "price": 123456,
-      "image": "",
-      "status": "Disponible",
-      "date": "2026-11-24",
-      "id": "hNHnoY6euV0"
-    },
-    {
-      "title": "dfcgvbhjn",
-      "description": "cfvgbhjnm,kl",
-      "price": 1234,
-      "image": "",
-      "status": "Disponible",
-      "date": "2026-11-24",
-      "id": "GFAFZjswfYE"
-    }
-  ],
+  "products": [],
   "$schema": "./node_modules/json-server/schema.json"
 }

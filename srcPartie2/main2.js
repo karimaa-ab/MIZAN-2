@@ -13,6 +13,17 @@ import { validerTitre,
         validerDescription,
         validerPrix
 } from "./validation2.js";
+import { sauvegarderDevise, 
+        obtenirDevise,
+        sauvegarderTheme,
+        obtenirTheme,
+        sauvegarderFavoris,
+        obtenirFavoris,
+        sauvegarderFiltre,
+        obtenirFiltre,
+        sauvegarderTri,
+        obtenirTri
+    } from "./storage2.js";
 
 const rechercheProduit = document.getElementById("recherche-produit");
 const triProduits = document.getElementById("tri-produits");
@@ -58,16 +69,46 @@ const reessayer = document.getElementById("reessayer");
 const succesModification = document.getElementById("succes-modification");
 const succesStatut = document.getElementById("succes-statut");
 const succesSuppression = document.getElementById("succes-suppression");
+const devise = document.getElementById("devise");
+const theme = document.getElementById("theme");
+const body = document.getElementById("body");
+
+// resuperation de la devise 
+const deviseSauvegardee = obtenirDevise();
+if(deviseSauvegardee !== null){
+    devise.value = deviseSauvegardee;
+}
+// recuperation de theme 
+const themeSauvegarde = obtenirTheme();
+if(themeSauvegarde !== null){
+    theme.value = themeSauvegarde;
+}
+appliquerTheme();
+// recuperation de filtre 
+const filtreSauvegarde  = obtenirFiltre();
+if(filtreSauvegarde !== null){
+    filtreStatut.value = filtreSauvegarde;
+}
+// recuperation de tri
+const triSauvegarde = obtenirTri();
+if(triSauvegarde !== null){
+    triProduits.value = triSauvegarde;
+}
 
 // chargement des produits dans la page 
 let tousLesProduits = [];
 let produitIdAModifier = null;
 let produitIdASupprimer;
+let favoris = obtenirFavoris();
 async function chargerProduits() {
     chargementProduits.classList.remove("hidden");
     try{
         tousLesProduits = await obtenirProduits();
-        afficherProduits(tousLesProduits);
+        const status = filtreStatut.value;
+        const filtrage = filtrerProduits(tousLesProduits, status);
+        const critere = triProduits.value;
+        const produitsTries = trierProduits(filtrage, critere);
+        afficherProduits(produitsTries, favoris, devise.value);
         erreurChargement.classList.add("hidden");
         messageErreurChargement.textContent = "";
     }catch(error){
@@ -89,26 +130,28 @@ chargerProduits();
 // chercher par nom 
 rechercheProduit.addEventListener("input", function(){
     const resultat = rechercherProduits(tousLesProduits,rechercheProduit.value);
-    afficherProduits(resultat);
+    afficherProduits(resultat, favoris);
 })
 // trier par titre , prix et date
 triProduits.addEventListener("change", function () {
     const critere = triProduits.value;
+    sauvegarderTri(critere);
     const produitsTries = trierProduits(tousLesProduits, critere);
-    afficherProduits(produitsTries); 
+    afficherProduits(produitsTries, favoris, devise.value); 
 });
 // filtrer par status
 filtreStatut.addEventListener("change", function(){
     const status = filtreStatut.value;
+    sauvegarderFiltre(status);
     const filtrage = filtrerProduits(tousLesProduits,status);
-    afficherProduits(filtrage);
+    afficherProduits(filtrage, favoris , devise.value);
 });
 // liaison de chercher et trier et filtrer  
 function actualiserProduits(){
     const resultatRecherche = rechercherProduits(tousLesProduits,rechercheProduit.value);
     const resultatFiltrer = filtrerProduits(resultatRecherche, filtreStatut.value);
     const resultatTrier = trierProduits(resultatFiltrer, triProduits.value);
-    afficherProduits(resultatTrier);
+    afficherProduits(resultatTrier, favoris, devise.value);
     if(tousLesProduits.length > 0 && resultatTrier.length === 0){
         etatVide.classList.add("hidden");
         aucunResultat.classList.remove("hidden");
@@ -166,7 +209,7 @@ async function gererClicProduit(event){
             return produit.id == id;
         });
         tousLesProduits[index]= resultat ;
-        afficherProduits(tousLesProduits);
+        afficherProduits(tousLesProduits, favoris);
         succesStatut.textContent = "Statut modifié avec succès !";
         succesStatut.classList.remove("hidden");
         setTimeout(function(){
@@ -177,6 +220,19 @@ async function gererClicProduit(event){
         const id = bouton.dataset.id;
         produitIdASupprimer = id;
         dialogSuppression.showModal();
+    }
+    if(bouton.classList.contains("btn-favori")){
+        const id = bouton.dataset.id;
+        if(favoris.includes(id)){
+            favoris = favoris.filter(function(idFavori){
+                return idFavori !== id;
+            });
+            bouton.textContent = "☆";
+        }else{
+            favoris.push(id);
+            bouton.textContent = "★";
+        }
+        sauvegarderFavoris(favoris);
     }
 }
 listeProduits.addEventListener("click",gererClicProduit)
@@ -236,7 +292,7 @@ formAjoutProduit.addEventListener("submit",async function(event){
         };
         const produitAjoute = await ajouterProduit(nouveauProduit)
         tousLesProduits.unshift(produitAjoute);
-        afficherProduits(tousLesProduits);
+        afficherProduits(tousLesProduits, favoris);
         formAjoutProduit.reset();
         erreurProduits.classList.add("hidden");
         succesProduit.textContent= "Produit ajouté avec succès !";
@@ -298,7 +354,7 @@ formModifierProduit.addEventListener("submit",async function(event){
            return produit.id == produitIdAModifier;
         });
         tousLesProduits[index] = resultat;
-        afficherProduits(tousLesProduits);
+        afficherProduits(tousLesProduits, favoris);
         dialogModifierProduit.close();
         erreurModification.classList.add("hidden");
         succesModification.textContent = "Produit modifié avec succès !";
@@ -326,7 +382,7 @@ confirmerSuppression.addEventListener("click", async function() {
     });
     const produitSupprime = tousLesProduits[index];
     tousLesProduits.splice(index,1);
-    afficherProduits(tousLesProduits);
+    afficherProduits(tousLesProduits, favoris);
     dialogSuppression.close();
     try{
         await supprimerProduit(produitIdASupprimer);
@@ -337,7 +393,7 @@ confirmerSuppression.addEventListener("click", async function() {
         }, 5000);
     }catch(error){
         tousLesProduits.splice(index,0,produitSupprime);
-        afficherProduits(tousLesProduits);
+        afficherProduits(tousLesProduits, favoris);
         erreurSuppression.textContent = "Erreur lors de la suppression du produit.";
         erreurSuppression.classList.remove("hidden");
     }
@@ -346,6 +402,36 @@ confirmerSuppression.addEventListener("click", async function() {
 reessayer.addEventListener("click", function(){
     chargerProduits();
 });
+// devise
+devise.addEventListener("change", function(){
+    const deviseChoisie = devise.value;
+    sauvegarderDevise(deviseChoisie);
+    actualiserProduits();
+});
+// theme
+function appliquerTheme(){
+    if(theme.value === "sombre"){
+        body.classList.add("bg-gray-900", "text-white");
+        body.classList.remove("bg-[#F8F6FC]", "text-gray-800");
+        document.querySelectorAll("section").forEach(function(section){
+           section.classList.remove("bg-white");
+           section.classList.add("bg-gray-800"); 
+        });    
+    }else{
+        body.classList.add("bg-[#F8F6FC]", "text-gray-800");
+        body.classList.remove("bg-gray-900", "text-white");
+        document.querySelectorAll("section").forEach(function(section){
+            section.classList.remove("bg-gray-800");
+            section.classList.add("bg-white");
+        });
+    }
+}
+theme.addEventListener("change", function(){
+     appliquerTheme();
+    sauvegarderTheme(theme.value)
+});
+
+
  
 
 

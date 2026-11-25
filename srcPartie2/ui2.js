@@ -1,4 +1,14 @@
-export function afficherProduits(produits){
+ // Taux de conversion
+const tauxChange = {
+    MAD: 1,
+    EUR: 0.0926,
+    USD: 0.1013
+};
+// Fonction de conversion
+function convertirPrix(prix, deviseChoisie){
+    return prix * tauxChange[deviseChoisie];
+}
+export function afficherProduits(produits , favoris = [], deviseChoisie = "MAD"){
     const listeProduits = document.getElementById("liste-produits");
     listeProduits.replaceChildren();
         const etatVide = document.getElementById("etat-vide");
@@ -24,7 +34,7 @@ export function afficherProduits(produits){
         titre.textContent= produit.title;
         titre.className= "font-bold mt-4";
         const prix = document.createElement("p");
-        prix.textContent= produit.price + " MAD";
+        prix.textContent=convertirPrix(produit.price ,deviseChoisie).toFixed(2) +" "+ deviseChoisie;
         prix.className= "text-[#35158C] font-bold mt-2";
         const state = document.createElement("span");
         state.textContent=produit.status;
@@ -33,7 +43,22 @@ export function afficherProduits(produits){
         }else{
             state.className ="inline-block bg-orange-100 text-orange-700 text-xs px-3 py-1 rounded-full mt-2";
         }
-        carte.appendChild(titre);
+        const btnFavori = document.createElement("button");
+        if (favoris.includes(String(produit.id))) {
+            btnFavori.textContent = "★";
+        } else {
+            btnFavori.textContent = "☆";
+        }
+        btnFavori.type = "button";
+        btnFavori.className = "btn-favori";
+        btnFavori.dataset.id = produit.id;
+        
+        const contTitre = document.createElement("div");
+        contTitre.className = "flex items-center justify-between mt-4";
+        contTitre.appendChild(titre);
+        contTitre.appendChild(btnFavori);
+
+        carte.appendChild(contTitre);
         carte.appendChild(prix);
         carte.appendChild(state);
         const btnStatut = document.createElement("button");
