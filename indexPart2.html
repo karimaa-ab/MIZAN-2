@@ -6,7 +6,7 @@
     <title>Mizan - Espace de gestion</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 </head>
-<body class="bg-[#F8F6FC] text-gray-800">
+<body id="body" class="bg-[#F8F6FC] text-gray-800">
     <div class="min-h-screen flex">
         <div id="sidebar-overlay" class="hidden fixed inset-0 bg-black/40 z-40 md:hidden"></div>
 
@@ -28,12 +28,6 @@
                     <span>Produits</span>
                 </a>
 
-                <a href="#reservations"
-                   class="flex items-center gap-3 hover:bg-white/20 rounded-lg px-4 py-3 transition">
-                    <img src="imagesPartie2/reservations.png" alt="" class="w-6 h-6 object-contain">
-                    <span>Réservations</span>
-                </a>
-
                 <a href="#parametres" class="flex items-center gap-3 hover:bg-white/20 rounded-lg px-4 py-3 transition">
                     <img src="imagesPartie2/setting.png" alt="" class="w-6 h-6 object-contain">
                     <span>Paramètres</span>
@@ -48,7 +42,7 @@
         </aside>
 
         <main class="flex-1 min-w-0">
-            <header id="dashboard" class="bg-white shadow-sm px-4 sm:px-6 lg:px-8 py-5 flex items-center gap-4">
+            <header id="dashboard" class=" shadow-sm px-4 sm:px-6 lg:px-8 py-5 flex items-center gap-4">
                 <button type="button" id="menu-mobile" aria-label="Ouvrir le menu" aria-expanded="false" class="md:hidden text-[#35158C] text-3xl shrink-0"> ☰ </button>
                 <div>
                     <h2 class="text-xl sm:text-2xl font-bold text-[#35158C]"> Tableau de bord</h2>
@@ -62,7 +56,7 @@
                     </div>
                     <div class="relative z-10 w-full sm:w-1/2 flex flex-col justify-center items-start">
                         <h2 class="text-2xl sm:text-3xl font-bold text-[#241044]"> Espace de gestion </h2>
-                        <p class="text-[#302044] mt-3 text-sm sm:text-base">  Gérez votre catalogue de produits et suivez les réservations de vos clients.</p>
+                        <p class="text-[#302044] mt-3 text-sm sm:text-base">  Gérez votre catalogue de produits.</p>
                         <div class="w-20 h-1 bg-[#35158C] rounded-full mt-5"></div>
                     </div>
                 </section>
@@ -202,29 +196,25 @@
                     </div>
                 </section>
 
-                <section id="reservations" class="bg-white rounded-xl shadow-sm overflow-hidden">
-                    <div class="bg-[#35158C] text-white px-4 sm:px-6 py-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
-                        <h2 class="text-lg sm:text-xl font-bold"> Gestion des réservations</h2>
-                        <button type="button" class="w-full sm:w-auto text-sm border border-white/70 rounded-lg px-4 py-2 hover:bg-white/20 transition">
-                            Voir toutes les réservations
-                        </button>
+                <section id="parametres" class="bg-white rounded-xl shadow-sm p-6 mt-6">
+                    <h2 class="text-xl font-bold">Paramètres</h2>
+                    <div class="mt-5">
+                       <label for="devise" class="block font-medium mb-2">Devise</label>
+                       <select id="devise" class="border rounded-lg p-2">
+                            <option value="MAD">Dirham marocain (MAD)</option>
+                            <option value="EUR">Euro (EUR)</option>
+                            <option value="USD">Dollar américain (USD)</option>
+                        </select>
                     </div>
-                    <div class="p-4 sm:p-6 overflow-x-auto">
-                        <table class="w-full min-w-[600px] text-left">
-                            <thead>
-                                <tr class="bg-purple-50 text-[#35158C]">
-                                    <th class="px-4 py-3">Client</th>
-                                    <th class="px-4 py-3">Produit</th>
-                                    <th class="px-4 py-3">Date</th>
-                                    <th class="px-4 py-3">Statut</th>
-                                    <th class="px-4 py-3">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody id="liste-reservations">
-                            </tbody>
-                        </table>
+                    <div class="mt-5">
+                        <label for="theme" class="block font-medium mb-2">Thème</label>
+                        <select id="theme" class="border rounded-lg p-2">
+                            <option value="clair">Clair</option>
+                            <option value="sombre">Sombre</option>
+                        </select>
                     </div>
                 </section>
+
             </div>
         </main>
     </div>
